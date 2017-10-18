@@ -1,0 +1,49 @@
+
+import java.awt.Color;
+
+public class Cuadro
+{
+    private boolean Habilitado = true;
+    private Color color;
+    public Cuadro(int ColorB){ 
+        switch (ColorB){
+            case 1: color = Color.RED; break;
+            case 2: color = Color.GREEN; break;
+            case 3: color = Color.BLUE; break;
+            case 4: color = Color.YELLOW; break;
+            case 5: color = Color.GRAY; break;
+            
+        };
+    }
+    
+    public Color getColor(){
+        return color;
+    }
+    public void ponerColor(int ColorB){
+         switch (ColorB){
+            case 1: color = Color.RED; break;
+            case 2: color = Color.GREEN; break;
+            case 3: color = Color.BLUE; break;
+            case 4: color = Color.YELLOW; break;
+            case 5: color = Color.GRAY; break;
+            
+        };
+    }
+    public void quitarColor(){
+        color = Color.BLACK;
+    }
+    
+    public boolean getHabilitado(){
+        return Habilitado;
+    }
+    
+    public void desHabilitar(){
+        Habilitado = false;
+    }
+    
+    public void Habilitar(){
+        Habilitado = true;
+    }
+   
+    
+}

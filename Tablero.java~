@@ -1,0 +1,212 @@
+/**
+ * Universidad de Costa Rica
+ * SAME GAME
+ * Clase: Tablero
+ * @author Erick Guillen Torelli
+ * @version 1.0
+ */
+ 
+public class Tablero
+{
+    // instance variables - replace the example below with your own
+    private int Tablero[][];
+    private int NumeroFilas;
+    private int NumeroColumnas;
+ 
+    /**
+     * Constructor for objects of class Tablero
+     */
+    public Tablero(int NumeroFilas,int NumeroColumnas)
+    {
+        this.NumeroFilas = NumeroFilas;
+        this.NumeroColumnas = NumeroColumnas;
+        Tablero = new int [NumeroFilas][NumeroColumnas];
+    }
+    
+    public int[][] getMatriz(){
+        return Tablero;
+    }
+    
+    public void imprimir(){
+        String Matriz = "";
+         
+        for (int i = 0; i < NumeroFilas;++i){
+             
+            for (int j = 0; j < NumeroColumnas;++j){
+                Matriz = Matriz + Tablero[i][j] + " ";
+            }
+            Matriz = Matriz + "\n";
+        }
+         
+        System.out.println(Matriz);
+        }
+         
+    public void CrearAzar(int NumeroColores){
+        int RandomColor;
+         
+        for (int indiceFilas = 0; indiceFilas < NumeroFilas;++indiceFilas){
+            for (int indiceColumnas = 0; indiceColumnas < NumeroColumnas;++indiceColumnas){
+               RandomColor = (int)(Math.random() * NumeroColores + 1);
+               Tablero[indiceFilas][indiceColumnas] = RandomColor;
+            }  
+        }
+         
+    }
+     
+    public void PonerCeros(){
+        Tablero[4][7] = 9;
+        Tablero[5][7] = 9;
+        Tablero[3][7] = 9;
+        Tablero[4][8] = 9;
+    }
+     
+    public void MoverColumnas(){
+        int Contador = 0;//Contador para el caso de que haya varias columnas de 0 pegadas repetir el proceso
+        int ContadorCeros = 0; 
+        //For para contar el numero de columnas que se van a mover
+        for(int indiceColumna = 0;indiceColumna < NumeroColumnas;++indiceColumna){
+            if(Tablero[NumeroFilas - 1][indiceColumna] == 0){
+                ContadorCeros = ContadorCeros + 1;
+            }
+        }
+         
+        for(int repeticiones = 0;repeticiones < ContadorCeros;++repeticiones){      
+            for(int indiceUltimaColumna = 0;indiceUltimaColumna < NumeroColumnas - 1;++indiceUltimaColumna){
+             
+              if(indiceUltimaColumna < NumeroColumnas && Tablero[NumeroFilas - 1][indiceUltimaColumna] == 0){
+                   
+                 for(int indiceColumnaActual = indiceUltimaColumna;indiceColumnaActual < NumeroColumnas - 1;++indiceColumnaActual){
+                  //for que mueve la columna que sigue hacia la izquierda en el caso de que la columna este toda en 0
+                  for(int indiceFila = 0;indiceFila < NumeroFilas;++indiceFila){
+                    Tablero[indiceFila][indiceColumnaActual] = Tablero[indiceFila][indiceColumnaActual + 1];
+                  }
+                  for(int indiceFila = 0;indiceFila < NumeroFilas;++indiceFila){
+                    Tablero[indiceFila][indiceColumnaActual + 1] = 0;
+                  }
+                 
+                 }
+              }
+                 
+             
+              }
+               
+            }
+        }
+           
+    public void MoverNegrosArriba(){
+        int CerosFila = 0;
+        
+    //For para realizar el proceso en cada columna para acomodar las filas
+     for(int indiceColumnas = 0;indiceColumnas < NumeroColumnas; ++indiceColumnas){
+            //For que cuenta los ceros en la fila que se desea acomodar
+        for(int indiceFilaActual = 0;indiceFilaActual < NumeroFilas;++indiceFilaActual){
+            if(Tablero[indiceFilaActual][indiceColumnas] == 0){
+                CerosFila = CerosFila + 1;
+            }
+           }
+           //For que se encarga de las repeticiones para la cantidad de ceros que haya que mover
+           for(int repeticiones = 0;repeticiones < CerosFila;++repeticiones){  
+                
+               for(int indiceUltimaFila = NumeroFilas - 1;indiceUltimaFila > 0;--indiceUltimaFila){
+                 if(indiceUltimaFila > 0 && Tablero[indiceUltimaFila][indiceColumnas] == 0){
+                 
+                  for(int indiceFila = indiceUltimaFila;indiceFila > 0;--indiceFila){
+                    Tablero[indiceFila][indiceColumnas]= Tablero[indiceFila - 1][indiceColumnas];
+                    Tablero[indiceFila - 1][indiceColumnas]= 0;
+                  }
+                 
+            }
+           }
+        }
+    }
+     
+   }
+   
+   public int Comer(int Fila,int Columna,int ColorComiendo){
+       int Cuenta = 1; //Variable para acumular el numero de comidas
+
+       //Derecha
+       if(Columna < NumeroColumnas -1 && Tablero[Fila][Columna + 1] == ColorComiendo ){
+
+           Tablero[Fila][Columna] = 0;
+           Tablero[Fila][Columna + 1] = 0;
+           if(Columna + 1 <= NumeroColumnas){
+           Cuenta = Cuenta + Comer(Fila,Columna + 1,ColorComiendo);
+        }
+        }
+       //Izquierda 
+       if(Columna > 0 && Tablero[Fila][Columna - 1] == ColorComiendo ){
+           Tablero[Fila][Columna] = 0;
+            Tablero[Fila][Columna - 1] = 0;
+           if(Columna - 1 >= 0){
+           Cuenta = Cuenta + Comer(Fila,Columna - 1,ColorComiendo);
+        }
+        }
+       //Arriba
+       if(Fila > 0 && Tablero[Fila - 1][Columna] == ColorComiendo){
+          
+           Tablero[Fila][Columna] = 0;
+           Tablero[Fila - 1][Columna] = 0;
+           if(Fila - 1 >= 0){
+           Cuenta = Cuenta + Comer(Fila - 1,Columna,ColorComiendo);
+        }
+        }
+       //Abajo
+       if(Fila < NumeroFilas - 1 && Tablero[Fila + 1][Columna] == ColorComiendo){
+           Cuenta = Cuenta + 1;
+           Tablero[Fila][Columna] = 0;
+           Tablero[Fila + 1][Columna] = 0;
+           if(Fila + 1 <= NumeroFilas){
+           Cuenta = Cuenta + Comer(Fila + 1,Columna,ColorComiendo);
+        }
+        }
+        
+       return Cuenta; 
+       
+    }
+    
+    public int fin(){
+    int Final = 0;
+    //Variables acontinuacion son para mover el while
+    int Columnas = 0;
+    int Filas = 0; 
+    //Caso en que el Jugador se comio todo
+    if (Tablero[NumeroFilas -1][0] == 0){
+           Final = 1;
+        }
+        //Manejo de execpcion a la busqueda de que aun se puede comer
+    for(int columnas = 0;columnas < NumeroColumnas - 1; ++columnas){
+        if (Tablero[NumeroFilas - 1][Columnas] != 0 &&( Tablero[NumeroFilas - 1][Columnas] == Tablero[NumeroFilas - 1][Columnas + 1])){
+                Final = 2;  
+              }
+    }
+        
+    
+    while(Columnas < NumeroColumnas - 1 && Final == 0){
+         Filas = 0;
+             
+            while(Filas < NumeroFilas - 1 && Final == 0){
+            if (Tablero[Filas][Columnas] != 0 &&( Tablero[Filas][Columnas] == Tablero[Filas][Columnas + 1] || Tablero[Filas][Columnas]== Tablero[Filas + 1][Columnas])){
+                Final = 2;  
+              }
+            
+            
+            ++Filas;
+        }
+            
+           
+        
+         
+        ++Columnas;
+        
+      }
+      
+       return Final;
+   }
+    
+
+   
+   }
+     
+
+   

@@ -1,0 +1,45 @@
+
+
+class Cuadricula{
+    private final int FILAS;
+    private final int COLUMNAS;
+    private interfaz Interfaz;
+    private Cuadro[][] contenido;
+    private int Color;
+    private int Puntos;
+    public Cuadricula(int Matriz[][], interfaz laInterfaz,int Puntos){
+        this.Puntos = Puntos;
+        FILAS = Matriz.length;
+        COLUMNAS = Matriz[0].length;
+        Interfaz = laInterfaz;
+        contenido = new Cuadro[FILAS][COLUMNAS];
+        for (int fila = 0; fila < FILAS; fila++){
+            for(int columna = 0; columna < COLUMNAS; columna++){
+                Color = Matriz[fila][columna];
+                contenido[fila][columna] = new Cuadro(Color);
+            }
+        }
+    }
+    
+    public void refrescarInterfaz(){
+        for (int fila = 0; fila < FILAS; fila++)
+            for(int columna = 0; columna < COLUMNAS; columna++)
+             Interfaz.refrescar(fila,columna,contenido[fila][columna].getColor(), contenido[fila][columna].getHabilitado(),Puntos);;        
+    }
+    public void procesar(int Matriz[][]){
+        int color;
+        for (int fila = 0; fila < FILAS; fila++){
+            for(int columna = 0; columna < COLUMNAS; columna++){
+        if(Matriz[fila][columna] == 0)
+        {contenido[fila][columna].quitarColor();
+         contenido[fila][columna].desHabilitar();
+        }
+        else{
+            color = Matriz[fila][columna];
+            contenido[fila][columna].ponerColor(color);
+            contenido[fila][columna].Habilitar();
+        }
+    } 
+    }
+   }
+}

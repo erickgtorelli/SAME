@@ -1,0 +1,71 @@
+
+import javax.swing.*;
+import java.awt.*;
+class interfaz extends JFrame{
+    private final int FILAS;
+    private final int COLUMNAS;
+    private Juego controlador;
+    private final int ANCHO_MARCO = 800;
+    private final int ALTO_MARCO = 600;
+    private final char SEPARADOR;
+    private JButton[][] contenido;
+    private int Puntos;
+    private Menu Menu1;
+    private JLabel Gano;
+    private JLabel Perdio;
+    public interfaz(int Matriz[][], char elSeparador, Juego elControlador,int Puntos){
+        this.Puntos = Puntos;
+        FILAS = Matriz.length;
+        COLUMNAS = Matriz[0].length;
+        SEPARADOR = elSeparador;
+        controlador = elControlador;
+        this.setSize(ANCHO_MARCO, ALTO_MARCO);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(FILAS, COLUMNAS ));
+        this.setTitle("SAME " + "Puntaje: " + Puntos);
+        Menu1 = new Menu();
+        this.setJMenuBar(Menu1.MenuBar());
+        contenido = new JButton[FILAS][ COLUMNAS];
+        for (int fila = 0; fila < FILAS; fila++)
+            for(int columna = 0; columna < COLUMNAS; columna++){
+                contenido[fila][columna] = new JButton();
+                contenido[fila][columna].addActionListener(elControlador);
+                contenido[fila][columna].setActionCommand(Integer.toString(fila) + SEPARADOR + Integer.toString(columna));;
+                this.add(contenido[fila][columna]);
+            }
+        }
+        
+    public void iniciar(){
+        this.setVisible(true);
+    }
+    
+    
+    public void refrescar(int FILAS,int COLUMNAS, Color elColor, boolean elHabilitado,int Puntos){
+        contenido[FILAS][COLUMNAS].setBackground(elColor);
+        contenido[FILAS][COLUMNAS].setEnabled(elHabilitado);
+        this.setTitle("SAME " + "Puntaje: " + Puntos);
+    }
+    
+    public int funcion_ventana(int Puntos ,String Gano_o_Perdio){ // interfaz con el usuario
+        Icon icono;
+        if(Gano_o_Perdio == "Perdio"){
+        Icon icono  =  new ImageIcon(getClass().getResource("Imagen/gameover.png"));	
+    }else{
+        Icon icono  =  new ImageIcon(getClass().getResource("Imagen/win.png"));
+    }
+     Object[] options = {"SI","NO"};//opciones de la ventana
+     int seleccion = JOptionPane.showOptionDialog(null, Gano_o_Perdio + "\n" + "Hiciste " + Puntos + " Puntos"+"\n" + "\n" +
+     "¿Quieres volver a Jugar?" , 
+     "SAME",//titulo de la ventana
+     JOptionPane.YES_NO_OPTION,
+     JOptionPane.QUESTION_MESSAGE,
+     icono, 
+     options,  
+     options[0]); //opcion por defecto en la ventana
+     return seleccion; //retorna la seleccion del jugador o cpu segun corresponda el turno
+    
+    }
+}
+
+

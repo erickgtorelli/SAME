@@ -1,0 +1,41 @@
+
+    import javax.swing.*;
+import java.awt.*;
+class Interfaz extends JFrame{
+    private final int FILAS;
+    private final int COLUMNAS;
+    private Juego controlador;
+    private final int ANCHO_MARCO = 600;
+    private final int ALTO_MARCO = 400;
+    private final int POSICION_X_MARCO = 200;
+    private final int POSICION_Y_MARCO = 300;
+    private final char SEPARADOR;
+    private JButton[][] contenido;
+    public Interfaz(int lasFilas, int lasColumnas, char elSeparador, Controlador elControlador){
+        FILAS = lasFilas;
+        COLUMNAS = lasColumnas;
+        SEPARADOR = elSeparador;
+        controlador = elControlador;
+        this.setSize(ANCHO_MARCO, ALTO_MARCO);
+        this.setLocation(POSICION_X_MARCO, POSICION_Y_MARCO);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(FILAS, COLUMNAS));
+        contenido = new JButton[FILAS][ COLUMNAS];
+        for (int fila = 0; fila < FILAS; fila++)
+            for(int columna = 0; columna < COLUMNAS; columna++){
+                contenido[fila][columna] = new JButton();
+                contenido[fila][columna].addActionListener(controlador);
+                contenido[fila][columna].setActionCommand(Integer.toString(fila) + SEPARADOR + Integer.toString(columna));;
+                this.add(contenido[fila][columna]);
+            }
+        }
+    public void iniciar(){
+        this.setVisible(true);
+    }
+    public void refrescar(int laFila, int laColumna, Color elColor, boolean elHabilitado){
+        contenido[laFila][laColumna].setBackground(elColor);
+        contenido[laFila][laColumna].setEnabled(elHabilitado);
+    }
+}
+
+}

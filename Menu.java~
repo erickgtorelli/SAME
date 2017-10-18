@@ -1,0 +1,71 @@
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import java.awt.event.*;
+
+public class Menu implements ActionListener
+{
+    // instance variables - replace the example below with your own
+    private JMenuBar Menu1;
+    private JMenu Juego,Ayuda;
+    private JMenuItem Reiniciar,Salir,Instrucciones,Acerca;
+    private int Accion;
+    
+    public Menu()
+    {
+        //Barra
+        Menu1 = new JMenuBar();
+        //Menus
+        Juego = new JMenu("Juego");
+        Ayuda = new JMenu("Ayuda");
+        //MenuItems
+        
+        Salir = new JMenuItem("Salir");
+        Instrucciones = new JMenuItem("Instrucciones");
+        Acerca = new JMenuItem("Acerca");
+        
+        
+        Salir.addActionListener(this);
+        Instrucciones.addActionListener(this);
+        Acerca.addActionListener(this);
+        //Agrego items a los menus
+        
+        Juego.addSeparator();
+        Juego.add(Salir);
+        
+        Ayuda.add(Instrucciones);
+        Ayuda.add(Acerca);
+       
+        Juego.add(Salir);
+        
+        Ayuda.add(Instrucciones);
+        Ayuda.add(Acerca);
+        Menu1.add(Juego);
+        Menu1.add(Ayuda);
+    }
+    
+    public JMenuBar MenuBar(){
+    return Menu1;
+    }
+    
+    public void actionPerformed(ActionEvent evento){
+        if(evento.getSource() == Instrucciones){
+            JOptionPane.showMessageDialog(null,"Hola! Bienvenido a SAME" +"\n" + "El juego conciste en comer la mayor cantidad de piezas unidas del mismo color"  
+        + "\n" +
+        "Entre mas comas con un solo clic obtendras mas puntos" + "\n" + "Ademas si logras dejar toda la pantalla en negro ganaras 1000 PUNTOS extra!! \n"+
+        "¿Estas Listo?"
+        ,"Instrucciones",JOptionPane.INFORMATION_MESSAGE);
+        }
+        if(evento.getSource() == Salir){
+         System.exit(0);   
+        }
+        if(evento.getSource() == Acerca){
+          JOptionPane.showMessageDialog(null,"Universidad de Costa Rica \n"+"III Tarea Programada \n" +
+          "Juego SAME \n" +
+          "Autor: Erick Guillen Torelli \n" + "Profesora: Josefina Pujol \n"
+        ,"Creditos",JOptionPane.INFORMATION_MESSAGE);
+        }
+    
+    }
+}

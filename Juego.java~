@@ -1,0 +1,89 @@
+import java.awt.event.*;
+
+
+class Juego implements ActionListener{
+    private final char SEPARADOR = ',';
+    private interfaz Interfaz;
+    private Cuadricula cuadricula;
+    private Tablero tablero;
+    private int Puntos = 0;
+    private int fin;
+    private int NuevaPartida;
+    private String Gano_o_Perdio;
+    private final int NUMERO_COLORES = 5;
+    
+    public Juego(){
+        tablero = new Tablero(15,20);
+        tablero.CrearAzar(NUMERO_COLORES);
+        Interfaz = new interfaz(tablero.getMatriz(),SEPARADOR, this,Puntos);
+        cuadricula = new Cuadricula(tablero.getMatriz(),Interfaz,Puntos);
+        
+    }
+    
+ 
+   
+    public int puntaje(int NumComidos){
+        NumComidos = (NumComidos *NumComidos - 1)/2;
+        return NumComidos;
+    }
+    public void finalJuego(){
+        if (fin == 2){
+         cuadricula.procesar(tablero.getMatriz());
+         cuadricula.refrescarInterfaz(Puntos);
+        }
+        //el jugador Gano
+        else if(fin == 1){
+            Gano_o_Perdio = "Gano";
+            Puntos = Puntos + 1000;
+            NuevaPartida = Interfaz.funcion_ventana(Puntos ,Gano_o_Perdio);
+            if(NuevaPartida == 0){
+                tablero.CrearAzar(NUMERO_COLORES);
+                Puntos = 0;
+                cuadricula.procesar(tablero.getMatriz());
+                cuadricula.refrescarInterfaz(Puntos);
+            }else{
+                System.exit(0);
+            }
+        
+        }
+        else if(fin==0){
+            Gano_o_Perdio = "Perdio";
+            NuevaPartida = Interfaz.funcion_ventana(Puntos ,Gano_o_Perdio); 
+             if(NuevaPartida == 0){
+                tablero.CrearAzar(NUMERO_COLORES);
+                Puntos = 0;
+                cuadricula.procesar(tablero.getMatriz());
+                cuadricula.refrescarInterfaz(Puntos);
+            }else{
+                System.exit(0);
+            }
+        }
+    }
+    
+    public void actionPerformed(ActionEvent evento){
+        String mensajeAccion = evento.getActionCommand();
+        int posicionSeparador = mensajeAccion.indexOf(SEPARADOR);
+        int filaAccion = Integer.parseInt(mensajeAccion.substring(0, posicionSeparador));
+        int columnaAccion = Integer.parseInt(mensajeAccion.substring(posicionSeparador + 1, mensajeAccion.length()));
+        int Matriz[][] = tablero.getMatriz();
+        int color = Matriz[filaAccion][columnaAccion];
+        Puntos = Puntos + puntaje(tablero.Comer(filaAccion,columnaAccion,color));
+        tablero.MoverNegrosArriba();
+        tablero.MoverColumnas();
+        fin = tablero.fin();
+        finalJuego();
+        
+    }
+    
+    public void iniciar(){
+        cuadricula.refrescarInterfaz(Puntos);
+        Interfaz.iniciar();
+    }
+    public static void main(String[] args){
+        Juego Juego1;
+        Juego1 = new Juego();
+        Juego1.iniciar();
+    }
+}
+    
+     

@@ -1,0 +1,25 @@
+import java.awt.event.*;
+
+class Controlador implements ActionListener{
+    private final int FILAS = 14;
+    private final int COLUMNAS = 21;
+    private final char SEPARADOR = ',';
+    private interfaz interfaz;
+    private Cuadricula cuadricula;
+    public Controlador(){
+        interfaz = new Interfaz(FILAS, COLUMNAS, SEPARADOR, this);
+        cuadricula = new Cuadricula(FILAS, COLUMNAS, interfaz);
+    }
+    public void iniciar(){
+        cuadricula.refrescarInterfaz();
+        interfaz.iniciar();
+    }
+    public void actionPerformed(ActionEvent evento){
+        String mensajeAccion = evento.getActionCommand();
+        int posicionSeparador = mensajeAccion.indexOf(SEPARADOR);
+        int filaAccion = Integer.parseInt(mensajeAccion.substring(0, posicionSeparador));
+        int columnaAccion = Integer.parseInt(mensajeAccion.substring(posicionSeparador + 1, mensajeAccion.length()));
+        cuadricula.procesar(filaAccion, columnaAccion);
+        cuadricula.refrescarInterfaz();
+    }
+}
